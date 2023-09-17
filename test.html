@@ -5,7 +5,7 @@
 <body>
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
   <script src="https://www.puck-js.com/puck.js"></script>
-  <text id="heartRateMonitor">Heart Rate</text>
+  <text id="heart_rate_monitor"></text>
   <button id="btnConnect">Connect</button>
 </body>
 </html>
@@ -59,6 +59,10 @@
     });
   });
 
+  var update_heart_rate = function (hr) {
+
+  };
+
   // When we get a line of data, check it and if it's
   // from the heart rate monitor, update it
   function onLine(line) {
@@ -70,7 +74,7 @@
         hr : parseInt(d[1]),
         conf : parseInt(d[2]),
       };
-      document.getElementById('heartRateMonitor').innerHTML = hr
+      updateChart(hr_data.hr);
     }
   }
 
