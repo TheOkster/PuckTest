@@ -5,7 +5,7 @@
 <body>
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
   <script src="https://www.puck-js.com/puck.js"></script>
-  <text id="heart_rate_monitor"></text>
+  <div id="chartContainer" style="height: 370px; width:100%;"></div>
   <button id="btnConnect">Connect</button>
 </body>
 </html>
@@ -59,8 +59,45 @@
     });
   });
 
-  var update_heart_rate = function (hr) {
+  //Chart Setup
+  var dps = []; // dataPoints
+  var chart = new CanvasJS.Chart("chartContainer", {
+    title :{
+      text: "Bangle.js HeartRate Monitoring Over Time"
+    },
+    axisY:{
+      title: "Heart Rate",
+    },
+    axisX:{
+      title: "Time",
+      valueFormatString: "HH:mm:ss",
+    },
+    data: [{
+      type: "spline",
+      indexLabel: "{y}",
+      dataPoints: dps
+    }]
+  });
 
+  chart.render();
+  var dataLength = 30; // number of dataPoints visible at any point
+
+  var updateChart = function (hr) {
+    if (dps.length <= dataLength) {
+      labelVal = new Date().toISOString();
+      xVal = new Date;
+      yVal = hr;
+      dps.push({
+        x: xVal,
+        y: yVal
+      });
+    }
+
+    if (dps.length > dataLength) {
+      dps.shift();
+    }
+
+    chart.render();
   };
 
   // When we get a line of data, check it and if it's
